@@ -286,7 +286,13 @@ var DateInput = (function (_super) {
             return MMDDYYFormate;
         }
     };
-    DateInput.prototype.componentDidUpdate = function () {
+    DateInput.prototype.componentDidUpdate = function (previous) {
+        var propsAreTheSame = this.props.value === previous.value
+            && this.props.selectedDateSection === previous.selectedDateSection
+            && this.props.dateFormate === previous.dateFormate;
+        if (propsAreTheSame) {
+            return;
+        }
         var selectedSection = FormattedDateSections[this.props.selectedDateSection];
         var selectedFormate = this.getSelectedDateFormat();
         var _a = selectedFormate[selectedSection], start = _a.start, end = _a.end;
