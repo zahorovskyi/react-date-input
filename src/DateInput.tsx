@@ -305,12 +305,20 @@ export class DateInput extends React.Component<InputProps, {}> {
       return MMDDYYFormate;
     }
   }
-  componentDidUpdate() {
-    const selectedSection = FormattedDateSections[this.props.selectedDateSection];
-    let selectedFormate = this.getSelectedDateFormat();
-    const {start, end} = selectedFormate[selectedSection];
-    this.el.setSelectionRange(start, end);
-  }
+    componentDidUpdate(previous) {
+        const propsAreTheSame = this.props.value === previous.value
+            && this.props.selectedDateSection === previous.selectedDateSection
+            && this.props.dateFormate === previous.dateFormate;
+
+        if (propsAreTheSame) {
+            return;
+        }
+
+        const selectedSection = FormattedDateSections[this.props.selectedDateSection];
+        let selectedFormate = this.getSelectedDateFormat();
+        const {start, end} = selectedFormate[selectedSection];
+        this.el.setSelectionRange(start, end);
+    }
   handleInput = (event: any) => {
       if (this.isSupportedDigits(event.data)) {
           this.props.onChange(undefined, event);
